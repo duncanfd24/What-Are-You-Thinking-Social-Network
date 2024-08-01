@@ -1,49 +1,36 @@
 const router = require('express').Router();
-const { Thought, User } = require('../models');
+//const { Thought, User } = require('../models');
 
-// GET all thoughts
-router.get('/thoughts', async (req, res) => {
-  try {
-    const thoughts = await Thought.find();
-    res.json(thoughts);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+const {
+  getThoughts,
+  getSingleThought,
+  createThought,
+  updateThought,
+  deleteThought,
+  addReaction,
+  removeReaction,
 
-// POST a new thought
-router.post('/thoughts', async (req, res) => {
-  try {
-    const thought = await Thought.create(req.body);
-    const user = await User.findOneAndUpdate(
-      { username: req.body.username },
-      { $push: { thoughts: thought._id } },
-      { new: true }
-    );
-    res.json(thought);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+} = require('../../controllers/thoughtController.js');
 
-// PUT to update a thought by ID
-router.put('/thoughts/:id', async (req, res) => {
-  try {
-    const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(thought);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+// /api/thoughts
+router.route('/').get(getThoughts).post(createThought);
 
-// DELETE a thought by ID
-router.delete('/thoughts/:id', async (req, res) => {
-  try {
-    await Thought.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Thought deleted' });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+// /api/thoughts/:thoughtId
+router
+  .route('/:thoughtId')
+  .get(getSingleThought)
+  .put(updateThought)
+  .delete(deleteThought)
+  ;
+
+  router
+.route('/:thoughtId/reactions')
+.post(addReaction)
+
+
+router
+.route('/:thoughtId/reactions/:reactionId')
+.delete(removeReaction);
 
 module.exports = router;
+
