@@ -11,7 +11,7 @@ This project is an API for a social network web application where users can shar
 
 ## Walkthrough Video
 
-A walkthrough video demonstrating the functionality of the application can be found here: 
+A walkthrough video demonstrating the functionality of the application can be found here: https://app.screencastify.com/v2/manage/videos/2kBwovf0MxyDTBvZqpCt
 
 ## License
 
